@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Word of the Day</title>
+  <title>Word of the Day + Loves</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      max-width: 700px;
+      max-width: 900px;
       margin: auto;
       background-color: #f9f9f9;
       color: #333;
@@ -19,67 +19,22 @@
       margin-bottom: 0.5em;
       color: #000000;       /* black */
       font-weight: normal;  /* not bold */
+      text-align: center;
     }
 
-    .word-urdu {
-      font-size: 2em;
-      font-weight: bold;
-      margin: 0.2em 0;
+    .main-container {
+      display: flex;
+      gap: 40px;              
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 30px;
     }
 
-    .word-english {
-      font-style: italic;
-      margin-bottom: 1em;
-      color: #555;
-    }
-
-    .sentence {
-      margin-top: 1em;
-      font-size: 1.1em;
-      line-height: 1.4;
-    }
-
-    .sentence-urdu {
-      margin-bottom: 0.5em;
-    }
-
-    /* ✅ New border styling for the word box */
-    #content {
-      border: 2px solid black;
+    #word-of-day, .love-box {
+      background-color: #fff7f0;   /* matching background */
       padding: 20px;
-      border-radius: 8px;
-      background-color: white;
-    }
-  </style>
-</head>
-<body>
-  <h1 style="font-family: Georgia, serif;">Word of the Day</h1>
-
-  <div id="content">
-    <!-- Content will go here -->
-  </div>
-
-  <script>
-    // Example data — replace or expand this to use your actual data or fetch from Google Sheets API
-    const wordData = {
-      day: 1,
-      level: "Beginner",
-      urduWord: "کتاب",
-      englishWord: "Book",
-      sentenceUrdu: "یہ ایک کتاب ہے۔",
-      sentenceEnglish: "This is a book."
-    };
-
-    const contentDiv = document.getElementById('content');
-
-    contentDiv.innerHTML = `
-      <div><strong>Day:</strong> ${wordData.day}</div>
-      <div><strong>Level:</strong> ${wordData.level}</div>
-      <div class="word-urdu">${wordData.urduWord}</div>
-      <div class="word-english">${wordData.englishWord}</div>
-      <div class="sentence sentence-urdu">${wordData.sentenceUrdu}</div>
-      <div class="sentence sentence-english">${wordData.sentenceEnglish}</div>
-    `;
-  </script>
-</body>
-</html>
+      border-radius: 15px;
+      border: 2px solid black;     /* <-- added black frame here */
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      width: 45%;
+      font-family:
