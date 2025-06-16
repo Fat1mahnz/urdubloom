@@ -12,42 +12,49 @@
       background-color: #f9f9f9;
       color: #333;
     }
-   h1 {
-  font-family: Georgia, serif;
-  font-size: 2.5em;
-  margin-bottom: 0.5em;
-  color: #000000;       /* black */
-  font-weight: normal;  /* not bold */
-}
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      color: #000000;       /* black */
+      font-weight: normal;  /* not bold */
+    }
+
     .word-urdu {
       font-size: 2em;
       font-weight: bold;
       margin: 0.2em 0;
     }
+
     .word-english {
       font-style: italic;
       margin-bottom: 1em;
       color: #555;
     }
+
     .sentence {
       margin-top: 1em;
       font-size: 1.1em;
       line-height: 1.4;
     }
+
     .sentence-urdu {
       margin-bottom: 0.5em;
     }
-  </#content {
-  border: 2px solid black;
-  padding: 15px;
-  border-radius: 8px;
-  background-color: white;
-}
->
+
+    /* ✅ New border styling for the word box */
+    #content {
+      border: 2px solid black;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: white;
+    }
+  </style>
 </head>
 <body>
   <h1 style="font-family: Georgia, serif;">Word of the Day</h1>
-  
+
   <div id="content">
     <!-- Content will go here -->
   </div>
