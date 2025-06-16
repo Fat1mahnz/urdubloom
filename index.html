@@ -1,119 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Word of the Day</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+      color: #2c3e50;
+    }
+    .word-urdu {
+      font-size: 2em;
+      font-weight: bold;
+      margin: 0.2em 0;
+    }
+    .word-english {
+      font-style: italic;
+      margin-bottom: 1em;
+      color: #555;
+    }
+    .sentence {
+      margin-top: 1em;
+      font-size: 1.1em;
+      line-height: 1.4;
+    }
+    .sentence-urdu {
+      margin-bottom: 0.5em;
+    }
+  </style>
 </head>
 <body>
-  <h1 style="font-family: Georgia, serif;">Word of the Day</h1>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<style>
-body {
-font-family: 'Inter', sans-serif;
-background: #f9f9f9;
-display: flex;
-justify-content: center;
-align-items: center;
-min-height: 100vh;
-margin: 0;
-}
+  <h1>Word of the Day</h1>
+  
+  <div id="content">
+    <!-- Content will go here -->
+  </div>
 
-.card {
-background: white;
-padding: 2rem;
-border-radius: 16px;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-max-width: 600px;
-width: 90%;
-}
+  <script>
+    // Example data — replace or expand this to use your actual data or fetch from Google Sheets API
+    const wordData = {
+      day: 1,
+      level: "Beginner",
+      urduWord: "کتاب",
+      englishWord: "Book",
+      sentenceUrdu: "یہ ایک کتاب ہے۔",
+      sentenceEnglish: "This is a book."
+    };
 
-h2 {
-font-size: 1.8rem;
-margin-bottom: 1rem;
-color: #333;
-text-align: center;
-}
+    const contentDiv = document.getElementById('content');
 
-.entry {
-margin-bottom: 1.2rem;
-}
-
-.label {
-font-weight: 600;
-color: #444;
-}
-
-.value {
-display: block;
-margin-top: 0.3rem;
-font-size: 1.1rem;
-color: #111;
-direction: rtl; /* Urdu text */
-unicode-bidi: isolate;
-}
-
-.value.ltr {
-direction: ltr; /* English text */
-}
-</style>
-</head>
-<body>
-
-<div class="card" id="wordOfTheDay">
-<h2>Word of the Day</h2>
-
-<div class="entry">
-<div class="label">Urdu Word</div>
-<div class="value" id="urduWord"></div>
-</div>
-
-<div class="entry">
-<div class="label">English Meaning</div>
-<div class="value ltr" id="englishWord"></div>
-</div>
-
-<div class="entry">
-<div class="label">Urdu Sentence</div>
-<div class="value" id="urduSentence"></div>
-</div>
-
-<div class="entry">
-<div class="label">English Sentence</div>
-<div class="value ltr" id="englishSentence"></div>
-</div>
-</div>
-
-<script>
-https://docs.google.com/spreadsheets/d/e/2PACX-1vTL0_jSOt78Ynupv5_PhNU961hnCiY7oQRfNeZf2ZNGEYTQZUSJbgH3ZZ64icN2KPo8erPppnns672W/pub?gid=858591482&single=true&output=csv
-
-fetch(sheetURL)
-.then(response => response.text())
-.then(csv => {
-const rows = csv.trim().split("\n").slice(1);
-const data = rows.map(row => {
-const parts = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-return parts.map(cell => cell.replace(/^"|"$/g, "").trim());
-});
-
-const today = new Date();
-const start = new Date(today.getFullYear(), 0, 0);
-const dayOfYear = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-
-const row = data.find(r => parseInt(r[0]) === dayOfYear);
-
-if (row) {
-document.getElementById("urduWord").textContent = row[2];
-document.getElementById("englishWord").textContent = row[3];
-document.getElementById("urduSentence").textContent = row[4];
-document.getElementById("englishSentence").textContent = row[5];
-} else {
-document.getElementById("wordOfTheDay").innerHTML = "<p>No word found for today.</p>";
-}
-})
-.catch(error => {
-console.error("Error fetching CSV:", error);
-});
-</script>
-
+    contentDiv.innerHTML = `
+      <div><strong>Day:</strong> ${wordData.day}</div>
+      <div><strong>Level:</strong> ${wordData.level}</div>
+      <div class="word-urdu">${wordData.urduWord}</div>
+      <div class="word-english">${wordData.englishWord}</div>
+      <div class="sentence sentence-urdu">${wordData.sentenceUrdu}</div>
+      <div class="sentence sentence-english">${wordData.sentenceEnglish}</div>
+    `;
+  </script>
 </body>
 </html>
