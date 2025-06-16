@@ -37,4 +37,207 @@
       border: 2px solid black;     /* <-- added black frame here */
       box-shadow: 0 6px 12px rgba(0,0,0,0.1);
       width: 45%;
-      font-family:
+      font-family: 'Georgia', serif;
+      color: #b08968;
+    }
+
+    .word-urdu {
+      font-size: 2em;
+      font-weight: bold;
+      margin: 0.2em 0;
+      color: #b08968;
+    }
+
+    .word-english {
+      font-style: italic;
+      margin-bottom: 1em;
+      color: #8c6c4a;
+    }
+
+    .sentence {
+      margin-top: 1em;
+      font-size: 1.1em;
+      line-height: 1.4;
+    }
+
+    .sentence-urdu {
+      margin-bottom: 0.5em;
+    }
+
+    /* Love inputs styling */
+    .love-box input {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      font-family: Georgia, serif;
+      color: #b08968;
+      background-color: #fff7f0;
+    }
+
+    .love-box button {
+      background-color: #b08968;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      font-family: Georgia, serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .love-box button:hover {
+      background-color: #9a7150;
+    }
+
+    #save-status {
+      font-size: 0.9em;
+      color: green;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+
+    /* Flower popup styles */
+    #flower-popup {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      background-color: #fff7f0;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 999;
+      font-family: 'Georgia', serif;
+      color: #b08968;
+    }
+
+    #flower-popup img {
+      width: 80px;
+      margin-bottom: 15px;
+      animation: bloom-pop 0.4s ease-out;
+    }
+
+    #flower-popup p {
+      margin: 0;
+      font-size: 1.1em;
+    }
+
+    .popup-visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.05);
+      pointer-events: auto;
+    }
+
+    .popup-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes bloom-pop {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Word of the Day</h1>
+
+  <div class="main-container">
+    <!-- Word of the Day Box -->
+    <div id="word-of-day">
+      <div><strong>Day:</strong> <span id="day"></span></div>
+      <div><strong>Level:</strong> <span id="level"></span></div>
+      <div class="word-urdu" id="word-urdu"></div>
+      <div class="word-english" id="word-english"></div>
+      <div class="sentence sentence-urdu" id="sentence-urdu"></div>
+      <div class="sentence sentence-english" id="sentence-english"></div>
+    </div>
+
+    <!-- 3 Things I Love Today Box -->
+    <div id="love-box" class="love-box">
+      <input type="text" id="love1" placeholder="Thing #1" />
+      <input type="text" id="love2" placeholder="Thing #2" />
+      <input type="text" id="love3" placeholder="Thing #3" />
+      <button onclick="saveLoves()">Save</button>
+      <p id="save-status"></p>
+    </div>
+  </div>
+
+  <!-- Flower Pop-up -->
+  <div id="flower-popup" class="popup-hidden">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Lotus_flower.svg/1024px-Lotus_flower.svg.png" alt="Lotus Flower" />
+    <p>You learned 3 new words — one flower bloomed 🌸</p>
+  </div>
+
+  <script>
+    // Example word data
+    const wordData = {
+      day: 1,
+      level: "Beginner",
+      urduWord: "کتاب",
+      englishWord: "Book",
+      sentenceUrdu: "یہ ایک کتاب ہے۔",
+      sentenceEnglish: "This is a book."
+    };
+
+    // Populate the Word of the Day content
+    document.getElementById('day').textContent = wordData.day;
+    document.getElementById('level').textContent = wordData.level;
+    document.getElementById('word-urdu').textContent = wordData.urduWord;
+    document.getElementById('word-english').textContent = wordData.englishWord;
+    document.getElementById('sentence-urdu').textContent = wordData.sentenceUrdu;
+    document.getElementById('sentence-english').textContent = wordData.sentenceEnglish;
+
+    function saveLoves() {
+      const love1 = document.getElementById('love1').value.trim();
+      const love2 = document.getElementById('love2').value.trim();
+      const love3 = document.getElementById('love3').value.trim();
+      const status = document.getElementById('save-status');
+
+      if (!love1 || !love2 || !love3) {
+        status.textContent = "Please fill in all 3 things you love.";
+        status.style.color = "red";
+        return;
+      }
+
+      localStorage.setItem('love1', love1);
+      localStorage.setItem('love2', love2);
+      localStorage.setItem('love3', love3);
+
+      status.textContent = "Saved! 🌸";
+
+      // Show flower popup
+      const popup = document.getElementById('flower-popup');
+      popup.classList.remove('popup-hidden');
+      popup.classList.add('popup-visible');
+
+      // Hide popup after 4 seconds
+      setTimeout(() => {
+        popup.classList.remove('popup-visible');
+        popup.classList.add('popup-hidden');
+      }, 4000);
+    }
+
+    // Optionally load saved loves on page load
+    window.onload = function () {
+      const love1 = localStorage.getItem('love1') || "";
+      const love2 = localStorage.getItem('love2') || "";
+      const love3 = localStorage.getItem('love3') || "";
+
+      document.getElementById('love1').value = love1;
+      document.getElementById('love2').value = love2;
+      document.getElementById('love3').value = love3;
+    };
+  </script>
+
+</body>
+</html>
