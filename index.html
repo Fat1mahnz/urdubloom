@@ -65,6 +65,14 @@
     }
 
     /* Love inputs styling */
+    .love-box label {
+      font-size: 0.9em;
+      color: #b08968;
+      margin-bottom: 4px;
+      display: block;
+      font-family: Georgia, serif;
+    }
+
     .love-box input {
       display: block;
       width: 100%;
@@ -164,9 +172,15 @@
 
     <!-- 3 Things I Love Today Box -->
     <div id="love-box" class="love-box">
+      <label for="love1">Write one thing you loved or appreciated today:</label>
       <input type="text" id="love1" placeholder="Thing #1" />
+
+      <label for="love2">Write another thing that made you happy today:</label>
       <input type="text" id="love2" placeholder="Thing #2" />
+
+      <label for="love3">Write a third thing you loved or enjoyed today:</label>
       <input type="text" id="love3" placeholder="Thing #3" />
+
       <button onclick="saveLoves()">Save</button>
       <p id="save-status"></p>
     </div>
@@ -214,6 +228,7 @@
       localStorage.setItem('love3', love3);
 
       status.textContent = "Saved! 🌸";
+      status.style.color = "green";
 
       // Show flower popup
       const popup = document.getElementById('flower-popup');
@@ -227,7 +242,7 @@
       }, 4000);
     }
 
-    // Optionally load saved loves on page load
+    // Load saved loves on page load
     window.onload = function () {
       const love1 = localStorage.getItem('love1') || "";
       const love2 = localStorage.getItem('love2') || "";
