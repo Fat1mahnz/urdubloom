@@ -11,14 +11,16 @@
       margin: auto;
       background-color: #f9f9f9;
       color: #333;
+      position: relative;
+      overflow-x: hidden;
     }
 
     h1 {
       font-family: Georgia, serif;
       font-size: 2.5em;
       margin-bottom: 0.5em;
-      color: #000000;       /* black */
-      font-weight: normal;  /* not bold */
+      color: #000000;
+      font-weight: normal;
       text-align: center;
     }
 
@@ -31,10 +33,10 @@
     }
 
     #word-of-day, .love-box {
-      background-color: #fff7f0;   /* matching background */
+      background-color: #fff7f0;
       padding: 20px;
       border-radius: 15px;
-      border: 2px solid black;     /* <-- added black frame here */
+      border: 2px solid black;
       box-shadow: 0 6px 12px rgba(0,0,0,0.1);
       width: 45%;
       font-family: 'Georgia', serif;
@@ -109,49 +111,76 @@
       min-height: 18px;
     }
 
+    /* Overlay background */
+    #popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 998;
+    }
+
     /* Flower popup styles */
     #flower-popup {
       position: fixed;
-      top: 30%;
+      top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%) scale(0.7);
       background-color: #fff7f0;
-      padding: 30px;
-      border-radius: 20px;
+      padding: 40px 50px;
+      border-radius: 25px;
       text-align: center;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
       opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
       z-index: 999;
       font-family: 'Georgia', serif;
       color: #b08968;
+      pointer-events: none;
+    }
+
+    #flower-popup.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+      animation: pop-scale 0.4s ease forwards;
     }
 
     #flower-popup img {
-      width: 80px;
-      margin-bottom: 15px;
+      width: 120px;
+      margin-bottom: 20px;
       animation: bloom-pop 0.4s ease-out;
     }
 
     #flower-popup p {
       margin: 0;
-      font-size: 1.1em;
-    }
-
-    .popup-visible {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.05);
-      pointer-events: auto;
-    }
-
-    .popup-hidden {
-      opacity: 0;
-      pointer-events: none;
+      font-size: 1.2em;
+      font-weight: 600;
     }
 
     @keyframes bloom-pop {
       0% { transform: scale(0.6); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pop-scale {
+      0% {
+        transform: translate(-50%, -50%) scale(0.7);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -172,13 +201,13 @@
 
     <!-- 3 Things I Love Today Box -->
     <div id="love-box" class="love-box">
-      <label for="love1">Write one thing you loved or appreciated today:</label>
+      <label for="love1">Write one thing you deeply appreciate:</label>
       <input type="text" id="love1" placeholder="Thing #1" />
 
-      <label for="love2">Write another thing that made you happy today:</label>
+      <label for="love2">Write one thing that made you happy today:</label>
       <input type="text" id="love2" placeholder="Thing #2" />
 
-      <label for="love3">Write a third thing you loved or enjoyed today:</label>
+      <label for="love3">Write one thing you love:</label>
       <input type="text" id="love3" placeholder="Thing #3" />
 
       <button onclick="saveLoves()">Save</button>
@@ -186,10 +215,13 @@
     </div>
   </div>
 
+  <!-- Overlay -->
+  <div id="popup-overlay"></div>
+
   <!-- Flower Pop-up -->
-  <div id="flower-popup" class="popup-hidden">
+  <div id="flower-popup">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Lotus_flower.svg/1024px-Lotus_flower.svg.png" alt="Lotus Flower" />
-    <p>You learned 3 new words — one flower bloomed 🌸</p>
+    <p>Congratulations! You've received a flower for introducing three new words in Urdu!</p>
   </div>
 
   <script>
@@ -211,11 +243,28 @@
     document.getElementById('sentence-urdu').textContent = wordData.sentenceUrdu;
     document.getElementById('sentence-english').textContent = wordData.sentenceEnglish;
 
+    const popup = document.getElementById('flower-popup');
+    const overlay = document.getElementById('popup-overlay');
+    const status = document.getElementById('save-status');
+
+    function showPopup() {
+      overlay.style.opacity = "1";
+      overlay.style.pointerEvents = "auto";
+
+      popup.classList.add('show');
+      
+      // Hide popup after 4 seconds
+      setTimeout(() => {
+        popup.classList.remove('show');
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
+      }, 4000);
+    }
+
     function saveLoves() {
       const love1 = document.getElementById('love1').value.trim();
       const love2 = document.getElementById('love2').value.trim();
       const love3 = document.getElementById('love3').value.trim();
-      const status = document.getElementById('save-status');
 
       if (!love1 || !love2 || !love3) {
         status.textContent = "Please fill in all 3 things you love.";
@@ -230,16 +279,7 @@
       status.textContent = "Saved! 🌸";
       status.style.color = "green";
 
-      // Show flower popup
-      const popup = document.getElementById('flower-popup');
-      popup.classList.remove('popup-hidden');
-      popup.classList.add('popup-visible');
-
-      // Hide popup after 4 seconds
-      setTimeout(() => {
-        popup.classList.remove('popup-visible');
-        popup.classList.add('popup-hidden');
-      }, 4000);
+      showPopup();
     }
 
     // Load saved loves on page load
